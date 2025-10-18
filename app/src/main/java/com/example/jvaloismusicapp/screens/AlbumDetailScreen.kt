@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AlbumDetailScreen(id : Int, pv : PaddingValues){
+fun AlbumDetailScreen(id : String, pv : PaddingValues){
     Column (
         modifier = Modifier
             .fillMaxSize()

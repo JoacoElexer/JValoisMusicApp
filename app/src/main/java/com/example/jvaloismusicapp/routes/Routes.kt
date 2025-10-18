@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 object HomeScreenRoute
 
 @Serializable
-data class AlbumDetailRoute(val id: Int)
+data class AlbumDetailRoute(val id: String)

@@ -7,6 +7,6 @@ data class AlbumModel(
     val title: String,
     val artist: String,
     val description: String,
-    val imageUrl: String,
+    val image: String,
     val id: String
 )
