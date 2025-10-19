@@ -1,6 +1,7 @@
 package com.example.jvaloismusicapp.screens
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -34,17 +36,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.example.jvaloismusicapp.ViewModels.PlayingViewModel
 import com.example.jvaloismusicapp.components.AlbumCard
 import com.example.jvaloismusicapp.components.RPSongCard
 import com.example.jvaloismusicapp.routes.AlbumDetailRoute
 import com.example.jvaloismusicapp.services.AlbumService
+import com.example.jvaloismusicapp.ui.theme.mainBG
+import com.example.jvaloismusicapp.ui.theme.playingBG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun HomeScreen(navController: NavController, pv: PaddingValues) {
+fun HomeScreen(navController: NavController, pv: PaddingValues, pvm: PlayingViewModel) {
     val url = "https://music.juanfrausto.com/api/"
     var albums by remember {
         mutableStateOf(listOf<AlbumModel>())
@@ -80,68 +85,74 @@ fun HomeScreen(navController: NavController, pv: PaddingValues) {
             CircularProgressIndicator()
         }
     } else {
-
         Column (
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(pv)
-                .padding(horizontal = 20.dp)
+                .fillMaxSize()
+                .background(mainBG)
         ){
-            HSHeader()
-            Row { // Titulo para albumes y boton "see more"
-                Text(
-                    "Albums",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)
-                Text(
-                    "Ver más",
-                    fontSize = 17.sp,
-                    color = Color.Blue,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            LazyRow { // Lista de albums
-                items(albums) { album ->
-                    AlbumCard(
-                        album = album,
-                        onClick = {
-                            navController.navigate(AlbumDetailRoute(album.id))
-                        }
-                    )
-                }
-            }
-            Row (
+            Column (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 25.dp, bottom = 10.dp)
-            ){ // Titulo para reproducidos recientemente y boton "see more"
-                Text(
-                    "Reproducidos recientemente",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)
-                Text(
-                    "Ver más",
-                    fontSize = 17.sp,
-                    color = Color.Blue,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Box {
-                LazyColumn { // Lista de canciones
+                    .padding(pv)
+                    .padding(horizontal = 20.dp)
+            ){
+                HSHeader()
+                Row { // Titulo para albumes y boton "see more"
+                    Text(
+                        "Albums",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)
+                    Text(
+                        "Ver más",
+                        fontSize = 17.sp,
+                        color = playingBG,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                LazyRow { // Lista de albums
                     items(albums) { album ->
-                        RPSongCard(
+                        AlbumCard(
                             album = album,
                             onClick = {
                                 navController.navigate(AlbumDetailRoute(album.id))
+                                pvm.onAlbumSelected(album)
                             }
                         )
                     }
                 }
-                // !! Insertar popup de reproducción
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 25.dp, bottom = 10.dp)
+                ){ // Titulo para reproducidos recientemente y boton "see more"
+                    Text(
+                        "Reproducidos recientemente",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)
+                    Text(
+                        "Ver más",
+                        fontSize = 17.sp,
+                        color = playingBG,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Box {
+                    LazyColumn { // Lista de canciones
+                        items(albums) { album ->
+                            RPSongCard(
+                                album = album,
+                                onClick = {
+                                    navController.navigate(AlbumDetailRoute(album.id))
+                                    pvm.onAlbumSelected(album)
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
     }

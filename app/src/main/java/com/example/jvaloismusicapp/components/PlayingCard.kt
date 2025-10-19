@@ -1,5 +1,6 @@
 package com.example.jvaloismusicapp.components
 
+import android.R.attr.onClick
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,22 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.jvaloismusicapp.R
-import com.example.jvaloismusicapp.models.AlbumModel
+import com.example.jvaloismusicapp.ViewModels.PlayingViewModel
+import com.example.jvaloismusicapp.ui.theme.playingBG
 
 @Composable
-fun RPSongCard(
-    album: AlbumModel,
-    onClick : () -> Unit
+fun PlayingCard(
+    pvm : PlayingViewModel
 ){
+    val Playing = pvm.currentlyPlaying
+    if (Playing == null) {
+        return
+    }
     Box (
         modifier = Modifier
-            .clickable{
-                onClick()
-            }
             .fillMaxWidth()
-            .padding(top = 16.dp)
+            .padding(16.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(Color.White)
+            .background(playingBG)
             .height(75.dp),
         contentAlignment = Alignment.Center
     ){
@@ -51,8 +53,8 @@ fun RPSongCard(
             verticalAlignment = Alignment.CenterVertically
         ){
             AsyncImage(
-                album.image,
-                contentDescription = album.title,
+                Playing.image,
+                contentDescription = Playing.title,
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
                     .size(55.dp),
@@ -63,20 +65,20 @@ fun RPSongCard(
                     .padding(horizontal = 5.dp)
             ){
                 Text(
-                    album.title,
+                    Playing.title,
                     fontSize = 18.sp,
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    "${album.artist} • Popular Song",
+                    "${Playing.artist} • Popular Song",
                     fontSize = 14.sp,
-                    color = Color.Gray
+                    color = Color.White
                 )
             }
             HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)
             Image(
-                painter = painterResource(id = R.drawable.verticaldotsdark),
+                painter = painterResource(id = R.drawable.playiconlight),
                 contentDescription = "Options",
                 modifier = Modifier
                     .size(25.dp)

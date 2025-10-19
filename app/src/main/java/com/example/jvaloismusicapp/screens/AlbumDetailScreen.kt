@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jvaloismusicapp.ViewModels.PlayingViewModel
 import com.example.jvaloismusicapp.components.ASongCard
 import com.example.jvaloismusicapp.components.AlbumHeader
 import com.example.jvaloismusicapp.components.RPSongCard
@@ -34,6 +36,8 @@ import com.example.jvaloismusicapp.models.AlbumByIdModel
 import com.example.jvaloismusicapp.models.AlbumModel
 import com.example.jvaloismusicapp.routes.AlbumDetailRoute
 import com.example.jvaloismusicapp.services.AlbumService
+import com.example.jvaloismusicapp.ui.theme.mainBG
+import com.example.jvaloismusicapp.ui.theme.playingBG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -41,7 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.log
 
 @Composable
-fun AlbumDetailScreen(id : String, pv : PaddingValues){
+fun AlbumDetailScreen(id : String, pv : PaddingValues, pvm: PlayingViewModel){
     val url = "https://music.juanfrausto.com/api/"
     var album by remember {
         mutableStateOf<AlbumByIdModel?>(null)
@@ -72,82 +76,88 @@ fun AlbumDetailScreen(id : String, pv : PaddingValues){
     if (loading) {
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(mainBG),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
     } else {
         val tracks = List(10) { index ->
-            album?.copy(title = "${album?.title} Track ${index + 1}") // opcional cambiar título
+            album?.copy(title = "${album?.title} • Track ${index + 1}")
         }
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 25.dp)
-                .padding(horizontal = 20.dp)
-        ) {
-            album?.let { nonNullAlbum ->
-                AlbumHeader(album = nonNullAlbum)
-            }
-            Box (
+                .background(mainBG)
+        ){
+            Column (
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.Black)
-            ){ // Sobre este album
-                Column (
+                    .fillMaxSize()
+                    .padding(top = 25.dp)
+                    .padding(horizontal = 20.dp)
+            ) {
+                album?.let { nonNullAlbum ->
+                    AlbumHeader(album = nonNullAlbum)
+                }
+                Box (
                     modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 20.dp)
                         .fillMaxWidth()
-                ){
-                    Text(
-                        "Sobre este album",
-                        color = Color.Black,
-                        fontSize = 21.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        album?.description ?: "null",
-                        color = Color.Gray,
-                        fontSize = 20.sp
-                    )
-                }
-            }
-            Box (
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .clip(RoundedCornerShape(35.dp))
-                    .background(Color.Black)
-            ){ // Artista
-                Row (
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                ){
-                    Text(
-                        "Artista: ",
-                        color = Color.Black,
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        album?.artist ?: "null",
-                        color = Color.Gray,
-                        fontSize = 19.sp
-                    )
-                }
-            }
-            Box {
-                LazyColumn {  // Lista de canciones del album  (Lista con la misma cancion + "Track n")
-                    items(tracks) { track ->
-                        ASongCard(
-                            album = track,
-                            num = 1
+                        .padding(vertical = 12.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color.White)
+                ){ // Sobre este album
+                    Column (
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp, vertical = 20.dp)
+                            .fillMaxWidth()
+                    ){
+                        Text(
+                            "Sobre este album",
+                            color = playingBG,
+                            fontSize = 21.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                            album?.description ?: "null",
+                            color = Color.Gray,
+                            fontSize = 20.sp
                         )
                     }
                 }
-                // !! Insertar popup de reproducción
+                Box (
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .clip(RoundedCornerShape(35.dp))
+                        .background(Color.White)
+                ){ // Artista
+                    Row (
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                    ){
+                        Text(
+                            "Artista: ",
+                            color = playingBG,
+                            fontSize = 19.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                            album?.artist ?: "null",
+                            color = Color.Gray,
+                            fontSize = 19.sp
+                        )
+                    }
+                }
+                Box {
+                    LazyColumn {  // Lista de canciones del album  (Lista con la misma cancion + "Track n")
+                        items(tracks) { track ->
+                            ASongCard(
+                                album = track
+                            )
+                        }
+                    }
+                    // !! Insertar popup de reproducción
+                }
             }
         }
     }

@@ -29,15 +29,14 @@ import com.example.jvaloismusicapp.models.AlbumModel
 
 @Composable
 fun ASongCard(
-    album: AlbumByIdModel?,
-    num: Int
+    album: AlbumByIdModel?
 ){
     Box (
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(Color.LightGray)
+            .background(Color.White)
             .height(75.dp),
         contentAlignment = Alignment.Center
     ){

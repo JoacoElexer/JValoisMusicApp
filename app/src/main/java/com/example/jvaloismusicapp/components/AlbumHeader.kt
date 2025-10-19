@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import coil3.compose.AsyncImage
 import com.example.jvaloismusicapp.R
 import com.example.jvaloismusicapp.models.AlbumByIdModel
 import com.example.jvaloismusicapp.models.AlbumModel
+import com.example.jvaloismusicapp.ui.theme.headerBG
 
 @Composable
 fun AlbumHeader(
@@ -172,7 +174,7 @@ fun AlbumHeader(
                             .padding(3.dp)
                             .padding(end = 10.dp)
                             .clip(RoundedCornerShape(50.dp))
-                            .background(Color.Black)
+                            .background(headerBG)
                             .size(65.dp)
                     ) {
                         Image(

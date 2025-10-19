@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.jvaloismusicapp.R
 import com.example.jvaloismusicapp.models.AlbumModel
+import com.example.jvaloismusicapp.ui.theme.playingBG
 
 @Composable
 fun AlbumCard(
@@ -62,7 +64,7 @@ fun AlbumCard(
                 .fillMaxWidth()
                 .padding(10.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color.Magenta)
+                .background(playingBG)
                 .height(55.dp),
             contentAlignment = Alignment.Center
         ){ // Info container
@@ -81,7 +83,7 @@ fun AlbumCard(
                     Text(
                         album.artist,
                         fontSize = 14.sp,
-                        color = Color.Black
+                        color = Color.White
                     )
                 }
                 HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Transparent)

@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,15 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.request.colorSpace
 import com.example.jvaloismusicapp.R
+import com.example.jvaloismusicapp.ui.theme.headerBG
+import com.example.jvaloismusicapp.ui.theme.mainBG
+import com.example.jvaloismusicapp.ui.theme.playingBG
 
 @Composable
 fun HSHeader(){
+    val gradientBrush = Brush.linearGradient(
+        colors = listOf(headerBG, playingBG),
+        start = androidx.compose.ui.geometry.Offset(0f, 0f),
+        end = androidx.compose.ui.geometry.Offset(0f, Float.POSITIVE_INFINITY)
+    )
     Box (
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp, bottom = 15.dp)
             .clip(RoundedCornerShape(25.dp))
-            .background(Color.Gray)
+            .background(brush = gradientBrush)
     ){
         Column (
             modifier = Modifier

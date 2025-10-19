@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.jvaloismusicapp.R
 import com.example.jvaloismusicapp.models.AlbumModel
+import com.example.jvaloismusicapp.ui.theme.playingBG
 
 @Composable
 fun FloatingPlayer(
@@ -30,9 +32,9 @@ fun FloatingPlayer(
             .clickable{
                 onClick()
             }
-            .padding(top = 16.dp)
+            .padding(20.dp)
             .clip(RoundedCornerShape(25.dp))
-            .background(Color.Gray)
+            .background(playingBG)
     ){
         Row {
             AsyncImage(
@@ -40,12 +42,13 @@ fun FloatingPlayer(
                 contentDescription = album.title
             )
             Column {
-                Text(album.title)
+                Text(album.title,
+                    color = Color.White)
                 Text(album.artist)
             }
             HorizontalDivider(modifier = Modifier.weight(1f))
             Image(
-                painter = painterResource(id = R.drawable.playicon),
+                painter = painterResource(id = R.drawable.playiconlight),
                 contentDescription = "Play"
             )
         }
